@@ -63,19 +63,25 @@ class App:
   def update(self):
     self.update_state()
     self.draw()
+    
+  def btns(self, keys):
+    for k in keys:
+      if pyxel.btn(k):
+        return True
+    return False
 
   def update_state(self):
     
-    if self.before != pyxel.KEY_LEFT and pyxel.btn(pyxel.KEY_LEFT) and self.grid[self.player_x-1][self.player_y] != '#':
+    if self.before != pyxel.KEY_LEFT and self.btns([pyxel.KEY_LEFT, pyxel.KEY_A]) and self.grid[self.player_x-1][self.player_y] != '#':
       self.player_x -= 1
       self.before = pyxel.KEY_LEFT
-    elif self.before != pyxel.KEY_RIGHT and pyxel.btn(pyxel.KEY_RIGHT) and self.grid[self.player_x+1][self.player_y] != '#':
+    elif self.before != pyxel.KEY_RIGHT and self.btns([pyxel.KEY_RIGHT, pyxel.KEY_D]) and self.grid[self.player_x+1][self.player_y] != '#':
       self.player_x += 1
       self.before = pyxel.KEY_RIGHT
-    elif self.before != pyxel.KEY_UP and pyxel.btn(pyxel.KEY_UP) and self.grid[self.player_x][self.player_y-1] != '#':
+    elif self.before != pyxel.KEY_UP and self.btns([pyxel.KEY_UP, pyxel.KEY_W]) and self.grid[self.player_x][self.player_y-1] != '#':
       self.player_y -= 1
       self.before = pyxel.KEY_UP
-    elif self.before != pyxel.KEY_DOWN and pyxel.btn(pyxel.KEY_DOWN) and self.grid[self.player_x][self.player_y+1] != '#':
+    elif self.before != pyxel.KEY_DOWN and self.btns([pyxel.KEY_DOWN, pyxel.KEY_S]) and self.grid[self.player_x][self.player_y+1] != '#':
       self.player_y += 1
       self.before = pyxel.KEY_DOWN
     else:
