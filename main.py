@@ -1,4 +1,3 @@
-import math
 import pyxel
 import random
 
