@@ -44,15 +44,21 @@ def generateMaze(w, h):
   return grid, (1, 1), (gx, gy)
 
 class App:
-  def __init__(self):
-    pyxel.init(240, 240, title="maze")
-    pyxel.load("resource.pyxres")
-    self.levelmap = [9, 13, 15, 35, 45, 63]
+  
+  def initialize_variable(self):
+    #self.levelmap = [9, 13, 15, 35, 45, 63]
+
+    self.levelmap = [9, 13, 15]
     self.level = 0
     self.grid, (self.player_x, self.player_y), (self.goal_x, self.goal_y) = generateMaze(self.levelmap[self.level], self.levelmap[self.level])
     self.clear = -1
     self.allclear = False
     self.before = None
+  
+  def __init__(self):
+    pyxel.init(240, 240, title="maze")
+    pyxel.load("resource.pyxres")
+    self.initialize_variable()
     pyxel.playm(0, loop=True)
     pyxel.run(self.update, self.draw)
 
@@ -89,12 +95,15 @@ class App:
       else:
         self.allclear = True
       self.clear = -1
+    if self.allclear and pyxel.btn(pyxel.KEY_RETURN):
+      self.initialize_variable()
       
   def draw(self):
     pyxel.cls(0)
     if self.allclear:
       cleartext = 'Stage All Clear!'
       pyxel.text(pyxel.width / 2 - 25, pyxel.height / 2, cleartext, pyxel.frame_count % 16)
+      pyxel.text(pyxel.width / 2 - 25, pyxel.height / 2 + 10, "Pless enter", pyxel.frame_count % 16)
       return
       
     if self.clear != -1:
