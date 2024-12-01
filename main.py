@@ -3,11 +3,7 @@ import random
 
 def generateMaze(w, h):
   directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-  grid = [[0 for _ in range(h)] for _ in range(w)]
-  
-  for x in range(w):
-    for y in range(h):
-      grid[x][y] = '#'
+  grid = [['#' for _ in range(h)] for _ in range(w)]
   
   def is_valid(x, y):
     return 0 <= x < w and 0 <= y < h
@@ -24,7 +20,7 @@ def generateMaze(w, h):
       nx, ny = x + tdirection[0], y + tdirection[1]
       if not is_valid(nx, ny):
         continue
-      if(nx, ny) in path:
+      if (nx, ny) in path:
         start = path.index((nx, ny))
         path = path[:start + 1]
       else:
@@ -62,16 +58,11 @@ class App:
 
   def update(self):
     self.update_state()
-    self.draw()
     
   def btns(self, keys):
-    for k in keys:
-      if pyxel.btn(k):
-        return True
-    return False
+    return any(pyxel.btn(k) for k in keys)
 
   def update_state(self):
-    
     if self.before != pyxel.KEY_LEFT and self.btns([pyxel.KEY_LEFT, pyxel.KEY_A]) and self.grid[self.player_x-1][self.player_y] != '#':
       self.player_x -= 1
       self.before = pyxel.KEY_LEFT
@@ -93,7 +84,7 @@ class App:
       self.clear -= 1
     if self.clear == 0:
       self.level += 1
-      if(self.level < len(self.levelmap)):
+      if self.level < len(self.levelmap):
         self.grid, (self.player_x, self.player_y), (self.goal_x, self.goal_y) = generateMaze(self.levelmap[self.level], self.levelmap[self.level])
       else:
         self.allclear = True
@@ -101,14 +92,14 @@ class App:
       
   def draw(self):
     pyxel.cls(0)
-    if self.allclear == True:
+    if self.allclear:
       cleartext = 'Stage All Clear!'
-      pyxel.text(pyxel.width/2 - 25, pyxel.height/2, cleartext, pyxel.frame_count % 16)
+      pyxel.text(pyxel.width / 2 - 25, pyxel.height / 2, cleartext, pyxel.frame_count % 16)
       return
       
     if self.clear != -1:
-      cleartext = 'Clear stage ' + str(self.level + 1) + "!"
-      pyxel.text(pyxel.width/2 - 25, pyxel.height/2, cleartext, pyxel.frame_count % 16)
+      cleartext = f'Clear stage {self.level + 1}!'
+      pyxel.text(pyxel.width / 2 - 25, pyxel.height / 2, cleartext, pyxel.frame_count % 16)
       return
     
     s = pyxel.width / (self.levelmap[self.level] * 8)
@@ -116,18 +107,18 @@ class App:
       for j in range(len(self.grid[0])):
         if self.grid[i][j] == '#':
           pyxel.blt(
-              i * (8 * s) + 4*s - 4,
-              j * (8 * s) + 4*s - 4,
+              i * (8 * s) + 4 * s - 4,
+              j * (8 * s) + 4 * s - 4,
               0, 0, 8, 8, 8, scale=s)
 
     pyxel.blt(
-        self.player_x * (8 * s) + 4*s - 4,
-        self.player_y * (8 * s) + 4*s - 4,
+        self.player_x * (8 * s) + 4 * s - 4,
+        self.player_y * (8 * s) + 4 * s - 4,
         0, 0, 0, 7, 8, scale=s)
     
     pyxel.blt(
-        self.goal_x * (8 * s) + 4*s - 4,
-        self.goal_y * (8 * s) + 4*s - 4,
+        self.goal_x * (8 * s) + 4 * s - 4,
+        self.goal_y * (8 * s) + 4 * s - 4,
         0, 8, 0, 8, 8, scale=s)
 
 App()
