@@ -46,9 +46,8 @@ def generateMaze(w, h):
 class App:
   
   def initialize_variable(self):
-    #self.levelmap = [9, 13, 15, 35, 45, 63]
-
-    self.levelmap = [9, 13, 15]
+    self.levelmap = [9, 13, 15, 35, 45, 63]
+    #self.levelmap = [9, 13, 15]
     self.level = 0
     self.grid, (self.player_x, self.player_y), (self.goal_x, self.goal_y) = generateMaze(self.levelmap[self.level], self.levelmap[self.level])
     self.clear = -1
